@@ -4,6 +4,9 @@ from typing import Tuple
 from app.providers.ollama import OllamaProvider
 from app.core.config import settings
 from app.providers.base import LLMProvider
+from app.providers.ollama_embed import OllamaEmbeddingProvider
+from app.providers.embed_base import EmbeddingProvider
+
 
 @dataclass(frozen=True)
 class RoutedModel:
@@ -41,3 +44,9 @@ class ModelRouter:
         #     return OpenAIProvider()
 
         raise ValueError(f"Unknown provider '{routed.provider}'")
+
+    def get_embed_provider(self, routed: RoutedModel) -> EmbeddingProvider:
+        if routed.provider == "ollama":
+            return OllamaEmbeddingProvider()
+        raise ValueError(f"Unknown provider '{routed.provider}'")
+
